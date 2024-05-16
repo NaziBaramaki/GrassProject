@@ -1,0 +1,14 @@
+D:\GrassShop\GrassShop\Core\obj\Debug\net7.0\Core.csproj.AssemblyReference.cache
+D:\GrassShop\GrassShop\Core\obj\Debug\net7.0\Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\GrassShop\GrassShop\Core\obj\Debug\net7.0\Core.AssemblyInfoInputs.cache
+D:\GrassShop\GrassShop\Core\obj\Debug\net7.0\Core.AssemblyInfo.cs
+D:\GrassShop\GrassShop\Core\obj\Debug\net7.0\Core.csproj.CoreCompileInputs.cache
+D:\GrassShop\GrassShop\Core\bin\Debug\net7.0\Core.deps.json
+D:\GrassShop\GrassShop\Core\bin\Debug\net7.0\Core.runtimeconfig.json
+D:\GrassShop\GrassShop\Core\bin\Debug\net7.0\Core.dll
+D:\GrassShop\GrassShop\Core\bin\Debug\net7.0\Core.pdb
+D:\GrassShop\GrassShop\Core\obj\Debug\net7.0\Core.dll
+D:\GrassShop\GrassShop\Core\obj\Debug\net7.0\refint\Core.dll
+D:\GrassShop\GrassShop\Core\obj\Debug\net7.0\Core.pdb
+D:\GrassShop\GrassShop\Core\obj\Debug\net7.0\Core.genruntimeconfig.cache
+D:\GrassShop\GrassShop\Core\obj\Debug\net7.0\ref\Core.dll

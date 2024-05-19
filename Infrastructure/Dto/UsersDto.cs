@@ -14,10 +14,11 @@ namespace Infrastructure.Dto
         public string updateDate { get; set; }
         public string IP { get; set; }        
         public int id { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string userName { get; set; }
+        public string Fname { get; set; }
+        public string Lname { get; set; }
+        public string Username { get; set; }
         public string password { get; set; }
+        public string Token { get; set; }
         public string email { get; set; }
         public string phone { get; set; }
 

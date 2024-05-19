@@ -86,40 +86,33 @@ namespace Application.Services
             return result;
         }
 
+        public void DeleteRequest(int id)
+        {
+            //var requestToDelete = await dbContext.Requests.FindAsync(id);
+            //dbContext.Requests.Remove(requestToDelete);
+            //dbContext.SaveChanges();
+            throw new NotImplementedException();
+        }
 
-        //public Task<UsersDto> GetUserByRequestId(int id)
-        //{
-        //    var request = await dbContext.Requests.FindAsync(id);
-        //    var model = new RequestDto
-        //    {
-        //        Id = request.Id,
-        //        createDate = request.createDate,
-        //        updateDate = request.updateDate,
-        //        IP = request.IP,
-        //        Fname = request.Fname,
-        //        Lname = request.Lname,
-        //        email = request.email,
-        //        Address = request.Address,
-        //        phone = request.phone,
-        //        requestNumber = request.requestNumber,
-        //        grassId = request.grassId
-        //    };
+        public async void UpdateRequest(RequestDto model)
+        {
+            var modelId = model.Id;
+            var requestEntity = await dbContext.Requests.FindAsync(modelId);
+                
+            if (requestEntity is null)
+            {
+                dbContext.Requests.Add(requestEntity);
+            }
+            else
+            {
 
-        //    var user = await dbContext.user.FindAsync(id);
-        //    var userModel = new UsersDto
-        //    {
-        //        createDate = user.createDate,
-        //        updateDate = user.updateDate,
-        //        IP = user.IP,
-        //        Fname = user.Fname,
-        //        Lname = user.Lname,
-        //        Username = user.userName,
-        //        password = user.password,
-        //        email = user.email,
-        //        phone = user.phone,
-        //    };
+                if (requestEntity != null)
+                {
+                    dbContext.Entry(requestEntity).CurrentValues.SetValues(model);
+                }
+            }
 
-        //    return userModel;
-        //}
+            dbContext.SaveChanges();
+        }
     }
 }

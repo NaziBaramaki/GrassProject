@@ -13,6 +13,7 @@ namespace Infrastructure.Dto
         public string updateDate { get; set; }
         public string IP { get; set; }
         public string Id { get; set; }
+        public string userId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string langusge { get; set; }

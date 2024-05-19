@@ -16,6 +16,7 @@ namespace Core.Entities
         public string IP { get; set; }
         [Key]
         public string Id { get; set; }
+        public string userId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string langusge { get; set; }

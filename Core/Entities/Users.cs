@@ -15,8 +15,7 @@ namespace Core.Entities
         public string updateDate { get; set; }
         public string IP { get; set; }
         [Key]
-        public int id { get; set; }
-        
+        public int id { get; set; }        
         public string Fname {get; set; }
         public string Lname { get; set; }
 
@@ -25,6 +24,8 @@ namespace Core.Entities
 
         [MinLength(10),MaxLength(20), Required]
         public string password { get; set; }
+        [MinLength(10), MaxLength(20), Required]
+        public string Token { get; set; }
         public string email { get; set; }
         public string phone { get; set; }
 

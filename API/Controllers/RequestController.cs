@@ -35,13 +35,13 @@ namespace API.Controllers
             var result = await requestService.AddRequest(model);
             return Ok(result);
         }
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Update(RequestDto model)
         {
             var result = await requestService.UpdateRequest(model);
             return Ok(result);
         }
-        [HttpGet("{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await requestService.DeleteRequest(id);

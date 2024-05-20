@@ -44,7 +44,8 @@ namespace API.Controllers
             var result = await usersService.UpdateUser(model);
             return Ok(result);
         }
-        [HttpGet("{id}")]
+
+        [HttpPut("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await usersService.DeleteUser(id);

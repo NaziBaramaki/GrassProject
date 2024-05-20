@@ -79,3 +79,4 @@ D:\GrassShop\GrassShop\API\bin\Debug\net7.0\Infrastructure.dll
 D:\GrassShop\GrassShop\API\bin\Debug\net7.0\Application.pdb
 D:\GrassShop\GrassShop\API\bin\Debug\net7.0\Core.pdb
 D:\GrassShop\GrassShop\API\bin\Debug\net7.0\Infrastructure.pdb
+D:\GrassShop\GrassShop\API\obj\Debug\net7.0\API.MvcApplicationPartsAssemblyInfo.cs

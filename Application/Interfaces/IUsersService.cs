@@ -15,8 +15,8 @@ namespace Application.Interfaces
         Task<UsersDto> GetToken(string username , string password);
         Task<UsersDto> GetUserByRequestId(int id);
         Task<UsersDto> AddUser(UsersDto model);
-        void DeleteUser(int id);
-        void UpdateUser(UsersDto model);
+        Task<bool> DeleteUser(int id);
+        Task<bool> UpdateUser(UsersDto model);
         Task<UsersDto> GetUserByNewsId(int id);
 
     }

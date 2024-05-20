@@ -9,12 +9,11 @@ namespace Application.Interfaces
 {
     public interface INewsService
     {
-        Task<NewsDto> AddNewsByUserId(int userId);
-        Task<List<NewsDto>> GetAllNews();
-        Task<List<NewsDto>> GetNewsById(string username);
-        Task<List<UsersDto>> GetAllNewsByUserId(int id);
         Task<NewsDto> AddNews(NewsDto model);
-        void DeleteNews(int id);
-        void UpdateNews(NewsDto model);
+        Task<List<NewsDto>> GetAllNews();
+        Task<NewsDto> GetNewsById(int id);
+        Task<List<NewsDto>> GetAllNewsByUserId(int id);
+        Task<bool> DeleteNews(int id);
+        Task<bool> UpdateNews(NewsDto model);
     }
 }

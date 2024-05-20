@@ -29,14 +29,15 @@ namespace Application.Services
             {
                 createDate = model.createDate,
                 updateDate = model.updateDate,
-                IP = model.IP,
+                ip = model.IP,
                 Fname = model.Fname,
                 Lname = model.Lname,
                 email = model.email,
                 Address = model.Address,
                 phone = model.phone,
                 requestNumber = model.requestNumber,
-                grassId = model.grassId
+                grassId = model.grassId,
+                isDeleted=false
             };
             
             await dbContext.AddAsync(request);
@@ -50,12 +51,20 @@ namespace Application.Services
         public async Task<RequestDto> GetRequestById(int id)
         {
             var request = await dbContext.Requests.FindAsync(id);
+            if (request == null)
+            {
+                throw new Exception("Some thing unexpected happend");
+            }
+            if (request.isDeleted == true)
+            {
+                throw new Exception("Some thing unexpected happend");
+            }
             var model = new RequestDto
             {
                 Id = request.Id,
                 createDate = request.createDate,
                 updateDate = request.updateDate,
-                IP = request.IP,
+                IP = request.ip,
                 Fname = request.Fname,
                 Lname = request.Lname,
                 email = request.email,
@@ -69,12 +78,12 @@ namespace Application.Services
 
         public async Task<List<RequestDto>> GetAllRequests()
         {
-            var result = await dbContext.Requests.Select(request => new RequestDto
+            var result = await dbContext.Requests.Where(request => request.isDeleted == false).Select(request => new RequestDto
             {
                 Id = request.Id,
                 createDate = request.createDate,
                 updateDate = request.updateDate,
-                IP = request.IP,
+                IP = request.ip,
                 Fname = request.Fname,
                 Lname = request.Lname,
                 email = request.email,
@@ -86,33 +95,51 @@ namespace Application.Services
             return result;
         }
 
-        public void DeleteRequest(int id)
+        public async Task<bool> DeleteRequest(int id)
         {
-            //var requestToDelete = await dbContext.Requests.FindAsync(id);
-            //dbContext.Requests.Remove(requestToDelete);
-            //dbContext.SaveChanges();
-            throw new NotImplementedException();
+            var requestToDelete = await dbContext.Requests.FindAsync(id);
+            
+            if (requestToDelete == null)
+            {
+                throw new Exception("user doesn't exist");
+            }
+            try
+            {
+
+            requestToDelete.isDeleted = true;
+            dbContext.Entry(requestToDelete).CurrentValues.SetValues(requestToDelete);
+            dbContext.SaveChanges();
+            return true;
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public async void UpdateRequest(RequestDto model)
+        public async Task<bool> UpdateRequest(RequestDto model)
         {
-            var modelId = model.Id;
-            var requestEntity = await dbContext.Requests.FindAsync(modelId);
-                
+            
+            var requestEntity = await dbContext.Requests.FindAsync(model.Id);
+
             if (requestEntity is null)
             {
-                dbContext.Requests.Add(requestEntity);
+                throw new Exception("User doesn't exist in database");
             }
-            else
+            try
             {
 
-                if (requestEntity != null)
-                {
-                    dbContext.Entry(requestEntity).CurrentValues.SetValues(model);
-                }
-            }
+            dbContext.Entry(requestEntity).CurrentValues.SetValues(model);
 
             dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+               return false;
+            }
         }
     }
 }

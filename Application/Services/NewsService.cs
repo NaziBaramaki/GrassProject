@@ -18,7 +18,8 @@ namespace Application.Services
     {
         private GrassShopDbContext dbContext;
 
-        public NewsService(GrassShopDbContext dbContext) {
+        public NewsService(GrassShopDbContext dbContext)
+        {
             this.dbContext = dbContext;
         }
         public async Task<NewsDto> AddNews(NewsDto model)
@@ -27,14 +28,15 @@ namespace Application.Services
             {
                 createDate = model.createDate,
                 updateDate = model.updateDate,
-                IP = model.IP,
+                ip = model.IP,
                 Id = model.Id,
                 userId = model.userId,
                 Title = model.Title,
                 Description = model.Description,
                 langusge = model.langusge,
                 isImg = model.isImg,
-                picture = model.picture
+                picture = model.picture,
+                isDeleted = false
             };
 
             await dbContext.AddAsync(news);
@@ -46,36 +48,13 @@ namespace Application.Services
 
         }
 
-        public async Task<List<UsersDto>> GetAllNewsByUserId(int userId)
+        public async Task<List<NewsDto>> GetAllNewsByUserId(int userId)
         {
-            //var value = await dbContext.News
-            //.Where(News => News.userId = userId.ToString())
-            //.Select(News => News.Id)
-            //.ToListAsync();
-
-            // return value;
-            throw new NotImplementedException();
-        }
-        public void DeleteNews(int id)
-        {
-            //var NewsToDelete = dbContext.News.FindAsync(id);
-            //dbContext.News.Remove(NewsToDelete);
-            //dbContext.SaveChanges();
-            throw new NotImplementedException();
-        }
-
-        public Task<NewsDto> AddNewsByUserId(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<NewsDto>> GetAllNews()
-        {
-            var result = await dbContext.News.Select(news => new NewsDto
+            var resultNews = await dbContext.News.Where(news => ((news.isDeleted == false && news.userId == userId))).Select(news => new NewsDto
             {
                 createDate = news.createDate,
                 updateDate = news.updateDate,
-                IP = news.IP,
+                IP = news.ip,
                 Id = news.Id,
                 userId = news.userId,
                 Title = news.Title,
@@ -83,37 +62,98 @@ namespace Application.Services
                 langusge = news.langusge,
                 isImg = news.isImg,
                 picture = news.picture
-            }).ToListAsync();       
-              
-            return result;
-        } 
-   
 
-        public Task<List<NewsDto>> GetNewsById(string username)
+            }).ToListAsync(); ;
+
+            return resultNews;
+        }
+        public async Task<bool> DeleteNews(int id)
         {
-            throw new NotImplementedException();
+            var NewsToDelete = await dbContext.News.FindAsync(id);
+
+            if (NewsToDelete == null)
+            {
+                throw new Exception("user doesn't exist");
+            }
+            try
+            {
+            NewsToDelete.isDeleted = true;
+            dbContext.Entry(NewsToDelete).CurrentValues.SetValues(NewsToDelete);
+            dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
-        public async void UpdateNews(NewsDto model)
+        public async Task<List<NewsDto>> GetAllNews()
+        {
+            var result = await dbContext.News.Where(news => news.isDeleted == false).Select(news => new NewsDto
+            {
+                createDate = news.createDate,
+                updateDate = news.updateDate,
+                IP = news.ip,
+                Id = news.Id,
+                userId = news.userId,
+                Title = news.Title,
+                Description = news.Description,
+                langusge = news.langusge,
+                isImg = news.isImg,
+                picture = news.picture
+            }).ToListAsync();
+
+            return result;
+        }
+
+
+        public async Task<NewsDto> GetNewsById(int id)
+        {
+            var news = await dbContext.News.FindAsync(id);
+            if (news == null)
+            {
+                throw new Exception("Some thing unexpected happend");
+            }
+            var model = new NewsDto
+            {
+                createDate = news.createDate,
+                updateDate = news.updateDate,
+                IP = news.ip,
+                Id = news.Id,
+                userId = news.userId,
+                Title = news.Title,
+                Description = news.Description,
+                langusge = news.langusge,
+                isImg = news.isImg,
+                picture = news.picture
+            };
+            return model;
+        }
+
+        public async Task<bool> UpdateNews(NewsDto model)
         {
 
-            var modelId = model.Id;
-            var newsEntity = await  dbContext.News.FindAsync(modelId);
-               
+            var newsEntity = await dbContext.News.FindAsync(model.Id);
+
             if (newsEntity is null)
             {
-                dbContext.News.Add(newsEntity);
+                throw new Exception("User doesn't exist in database");
             }
-            else
+
+            try
             {
+            dbContext.Entry(newsEntity).CurrentValues.SetValues(model);
+            dbContext.SaveChanges();
+                return true;
 
-                if (newsEntity != null)
-                {
-                    dbContext.Entry(newsEntity).CurrentValues.SetValues(model);
-                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
 
-            dbContext.SaveChanges();
         }
     }
 }

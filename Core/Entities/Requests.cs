@@ -9,11 +9,8 @@ using System.Threading.Tasks;
 namespace Core.Entities
 {
     [Table("RequestTbl",Schema ="Bussiness" )]
-    public class Requests
+    public class Requests: BaseEntity
     {
-        public string createDate { get; set; }
-        public string updateDate { get; set; }
-        public string IP { get; set; }
 
         [Key]
         public string Id { get; set; }

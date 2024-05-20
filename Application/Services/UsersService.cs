@@ -22,14 +22,14 @@ namespace Application.Services
         {
             this.dbContext = dbContext;
         }
-
+       
         public async Task<UsersDto> AddUser(UsersDto model)
         {
             var user = new Users
             {
                 createDate = model.createDate,
                 updateDate = model.updateDate,
-                IP = model.IP,
+                ip = model.IP,
                 id = model.id,
                 Fname = model.Fname,
                 Lname = model.Lname,
@@ -37,7 +37,8 @@ namespace Application.Services
                 password = model.password,
                 email = model.email,
                 Token = model.Token,
-                phone = model.phone
+                phone = model.phone,
+                isDeleted = false
             };
             await dbContext.AddAsync(user);
             await dbContext.SaveChangesAsync();
@@ -47,30 +48,42 @@ namespace Application.Services
 
         }
 
-        public void DeleteUser(int id)
+        public async Task<bool> DeleteUser(int id)
         {
-            //var userToDelete = await dbContext.user.FindAsync(id);
+            var userToDelete = await dbContext.user.FindAsync(id);
             //dbContext.user.Remove(userToDelete);
-            //dbContext.SaveChanges();
-            throw new NotImplementedException();
-
+            if (userToDelete == null)
+            {
+                throw new Exception("user doesn't exist");
+            }
+            try
+            {
+            userToDelete.isDeleted = true;
+            dbContext.Entry(userToDelete).CurrentValues.SetValues(userToDelete);
+            dbContext.SaveChanges();
+            return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public async Task<List<UsersDto>> GetAll()
         {
-            var result = await dbContext.user.Select(Users => new UsersDto
+            var result = await dbContext.user.Where(users => users.isDeleted==false).Select(users => new UsersDto
             {
-                createDate = Users.createDate,
-                updateDate = Users.updateDate,
-                IP = Users.IP,
-                id = Users.id,
-                Fname = Users.Fname,
-                Lname = Users.Lname,
-                Username = Users.Username,
-                password = Users.password,
-                email = Users.email,
-                Token = Users.Token,
-                phone = Users.phone
+                createDate = users.createDate,
+                updateDate = users.updateDate,
+                IP = users.ip,
+                id = users.id,
+                Fname = users.Fname,
+                Lname = users.Lname,
+                Username = users.Username,
+                password = users.password,
+                email = users.email,
+                Token = users.Token,
+                phone = users.phone
 
             }).ToListAsync();
             return result;
@@ -79,11 +92,15 @@ namespace Application.Services
         public async Task<UsersDto> GetUserByUsername(string username)
         {
             var user = await dbContext.user.FindAsync(username);
+            if (user.isDeleted == true)
+            {
+                throw new Exception("Some thing unexpected happend");
+            }
             var model = new UsersDto
             {
                 createDate = user.createDate,
                 updateDate = user.updateDate,
-                IP = user.IP,
+                IP = user.ip,
                 id = user.id,
                 Fname = user.Fname,
                 Lname = user.Lname,
@@ -99,14 +116,17 @@ namespace Application.Services
         public async Task<UsersDto> GetToken(string username, string password)
         {
             var user = await dbContext.user.FindAsync(username);
+            if (user.isDeleted == true)
+            {
+                throw new Exception("Some thing unexpected happend");
+            }
             if (user.password == password)
             {
-
                 var model = new UsersDto
                 {
                     createDate = user.createDate,
                     updateDate = user.updateDate,
-                    IP = user.IP,
+                    IP = user.ip,
                     id = user.id,
                     Fname = user.Fname,
                     Lname = user.Lname,
@@ -122,40 +142,33 @@ namespace Application.Services
             {
                 return null;
             }
-
         }
 
         public async Task<UsersDto> GetUserByRequestId(int id)
         {
             var request = await dbContext.Requests.FindAsync(id);
-            var model = new RequestDto
+            if (request.isDeleted == true)
             {
-                Id = request.Id,
-                createDate = request.createDate,
-                updateDate = request.updateDate,
-                IP = request.IP,
-                Fname = request.Fname,
-                Lname = request.Lname,
-                email = request.email,
-                Address = request.Address,
-                phone = request.phone,
-                requestNumber = request.requestNumber,
-                grassId = request.grassId
-            };
-            string email = model.email;
+                throw new Exception("Some thing unexpected happend");
+            }
+            string email = request.email;
             var user = await dbContext.user.FindAsync(email);
-            if (user != null)
+            if (user == null)
             {
                 throw new Exception("Some thing unexpected happend");
             }
             else
             {
+                if (user.isDeleted == true)
+                {
+                    throw new Exception("Some thing unexpected happend");
+                }
 
                 var userModel = new UsersDto
                 {
                     createDate = user.createDate,
                     updateDate = user.updateDate,
-                    IP = user.IP,
+                    IP = user.ip,
                     Fname = user.Fname,
                     Lname = user.Lname,
                     Username = user.Username,
@@ -168,54 +181,46 @@ namespace Application.Services
             }
         }
 
-        public async void UpdateUser(UsersDto model)
+        public async Task<bool> UpdateUser(UsersDto model)
         {
-            var modelId = model.id;
-            var userEntity = await dbContext.user.FindAsync(modelId);
+            var userEntity = await dbContext.user.FindAsync(model.id);
 
             if (userEntity is null)
             {
-                dbContext.user.Add(userEntity);
+                throw new Exception("User doesn't exist in database");
             }
-            else
+            try
             {
 
-                if (userEntity != null)
-                {
-                    dbContext.Entry(userEntity).CurrentValues.SetValues(model);
-                }
-            }
-
+            dbContext.Entry(userEntity).CurrentValues.SetValues(model);                
+       
             dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }     
 
         }
 
         public async Task<UsersDto> GetUserByNewsId(int id)
         {
             var News = await dbContext.News.FindAsync(id);
-
+            
             if (News == null)
             {
                 throw new Exception("Some thing unexpected happend");
             }
             else
             {
+                if (News.isDeleted == true)
+                {
+                    throw new Exception("Some thing unexpected happend");
+                }
 
-                var model = new NewsDto
-                {                    
-                    createDate = News.createDate,
-                    updateDate = News.updateDate,
-                    IP = News.IP,
-                    Id = News.Id,
-                    userId = News.userId,
-                    Title = News.Title,
-                    Description = News.Description,
-                    langusge = News.langusge,
-                    isImg = News.isImg,
-                    picture = News.picture
-
-                };
-                string userId = model.userId;
+                var userId = News.userId;
                 var user = await dbContext.user.FindAsync(userId);
 
                 if (user != null)
@@ -224,12 +229,16 @@ namespace Application.Services
                 }
                 else
                 {
+                    if (user.isDeleted == true)
+                    {
+                        throw new Exception("Some thing unexpected happend");
+                    }
 
                     var userModel = new UsersDto
                     {
                         createDate = user.createDate,
                         updateDate = user.updateDate,
-                        IP = user.IP,
+                        IP = user.ip,
                         Fname = user.Fname,
                         Lname = user.Lname,
                         Username = user.Username,

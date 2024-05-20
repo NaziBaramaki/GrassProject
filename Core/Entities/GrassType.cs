@@ -9,11 +9,8 @@ using System.Threading.Tasks;
 namespace Core.Entities
 {
     [Table("GrassTbl", Schema = "Bussiness")]
-    public class GrassType
-    {
-        public string createDate { get; set; }
-        public string updateDate { get; set; }
-        public string IP { get; set; }
+    public class GrassType: BaseEntity
+    {       
         [Key]
         public int Id { get; set; }
         public int Type { get; set; }

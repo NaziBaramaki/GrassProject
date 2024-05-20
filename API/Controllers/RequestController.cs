@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Services;
 using Infrastructure.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,7 +35,19 @@ namespace API.Controllers
             var result = await requestService.AddRequest(model);
             return Ok(result);
         }
+        [HttpPost]
+        public async Task<IActionResult> Update(RequestDto model)
+        {
+            var result = await requestService.UpdateRequest(model);
+            return Ok(result);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await requestService.DeleteRequest(id);
 
+            return Ok(result);
+        }
 
     }
 }

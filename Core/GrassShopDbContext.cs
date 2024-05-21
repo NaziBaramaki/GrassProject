@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    public class GrassShopDbContext : DbContext
+    public class GrassShopDbContext : IdentityDbContext
     {
         public GrassShopDbContext(DbContextOptions options) : base(options)
         { 

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Core.Entities 
 {
     [Table("BannersTbl", Schema ="Bussiness")]
     public class Banners: BaseEntity

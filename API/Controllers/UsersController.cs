@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Infrastructure.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -76,5 +77,29 @@ namespace API.Controllers
 
             return Ok(result);
         }
+        //[HttpGet]
+        //[Route("GetUserRole")]
+        //[Authorize(Roles = StaticUserRoles.USER)]
+        //public IActionResult GetUserRole()
+        //{
+        //    return Ok();
+        //}
+
+        //[HttpGet]
+        //[Route("GetAdminRole")]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
+        //public IActionResult GetAdminRole()
+        //{ 
+        //    return Ok(); 
+        //}
+
+        //[HttpGet]
+        //[Route("getOwnerRole")]
+        //[Authorize(Roles = StaticUserRoles.OWNER)]
+        //public IActionResult GetOwnerRole()
+        //{
+        //    //return Ok(summeries);
+        //    return Ok();
+        //}
     }
 }

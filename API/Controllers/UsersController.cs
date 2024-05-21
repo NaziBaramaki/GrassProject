@@ -1,6 +1,8 @@
 ﻿using Application.Interfaces;
 using Infrastructure.Dto;
+using Infrastructure.OtherObject;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,6 +21,8 @@ namespace API.Controllers
         }
 
         [HttpGet("{username}")]
+        [Route("User/Get")]
+        [Authorize]
         public async Task<IActionResult> Get(string username)
         {
             var result = await usersService.GetUserByUsername(username);
@@ -27,6 +31,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Route("User/GetAll")]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var result = await usersService.GetAll();
@@ -77,29 +83,31 @@ namespace API.Controllers
 
             return Ok(result);
         }
-        //[HttpGet]
-        //[Route("GetUserRole")]
-        //[Authorize(Roles = StaticUserRoles.USER)]
-        //public IActionResult GetUserRole()
-        //{
-        //    return Ok();
-        //}
 
-        //[HttpGet]
-        //[Route("GetAdminRole")]
-        //[Authorize(Roles = StaticUserRoles.ADMIN)]
-        //public IActionResult GetAdminRole()
-        //{ 
-        //    return Ok(); 
-        //}
 
-        //[HttpGet]
-        //[Route("getOwnerRole")]
-        //[Authorize(Roles = StaticUserRoles.OWNER)]
-        //public IActionResult GetOwnerRole()
-        //{
-        //    //return Ok(summeries);
-        //    return Ok();
-        //}
+        [HttpGet()]
+        [Route("User/GetUsersRole")]
+        [Authorize(Roles = StaticUserRoles.CUSTOMER)]
+        public async Task<IActionResult> GetUsersRole(string username)
+        {
+            return Ok();
+        }
+
+        [HttpGet()]
+        [Route("User/GetAdminsRole")]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        public async Task<IActionResult> GetAdminsRole(string username)
+        {
+            return Ok();
+        }
+
+        [HttpGet()]
+        [Route("User/GetOwnersRole")]
+        [Authorize(Roles = StaticUserRoles.OWNER)]
+        public async Task<IActionResult> GetOwnersRole(string username)
+        {
+            return Ok();
+        }
+
     }
 }

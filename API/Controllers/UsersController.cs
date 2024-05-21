@@ -20,8 +20,8 @@ namespace API.Controllers
             this.usersService = usersService;
         }
 
-        [HttpGet("{username}")]
-        [Route("User/Get")]
+        [HttpGet()]
+        [Route("Get")]
         [Authorize]
         public async Task<IActionResult> Get(string username)
         {
@@ -30,29 +30,32 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        [Route("User/GetAll")]
+        [HttpGet()]
+        [Route("GetAll")]
         [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var result = await usersService.GetAll();
             return Ok(result);
         }
-        [HttpPost]
+        [HttpPost()]
+        [Route("Create")]
         public async Task<IActionResult> Create(UsersDto model)
         {
             var result = await usersService.AddUser(model);
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPut()]
+        [Route("Update")]
         public async Task<IActionResult> Update(UsersDto model)
         {
             var result = await usersService.UpdateUser(model);
             return Ok(result);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut()]
+        [Route("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await usersService.DeleteUser(id);
@@ -60,7 +63,8 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{username,password}")]
+        [HttpGet()]
+        [Route("GetToken")]
         public async Task<IActionResult> GetToken(string username, string password)
         {
             var result = await usersService.GetToken(username, password);
@@ -68,7 +72,8 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{RequestId}")]
+        [HttpGet()]
+        [Route("GetUserByRequestInfo")]
         public async Task<IActionResult> GetUserByRequestInfo(int RequestId)
         {
             var result = await usersService.GetUserByRequestId(RequestId);
@@ -76,7 +81,8 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{newsId}")]
+        [HttpGet()]
+        [Route("GetUserByNewsInfo")]
         public async Task<IActionResult> GetUserByNewsInfo(int newsId)
         {
             var result = await usersService.GetUserByNewsId(newsId);
@@ -86,7 +92,7 @@ namespace API.Controllers
 
 
         [HttpGet()]
-        [Route("User/GetUsersRole")]
+        [Route("GetUsersRole")]
         [Authorize(Roles = StaticUserRoles.CUSTOMER)]
         public async Task<IActionResult> GetUsersRole(string username)
         {
@@ -94,7 +100,7 @@ namespace API.Controllers
         }
 
         [HttpGet()]
-        [Route("User/GetAdminsRole")]
+        [Route("GetAdminsRole")]
         [Authorize(Roles = StaticUserRoles.ADMIN)]
         public async Task<IActionResult> GetAdminsRole(string username)
         {
@@ -102,7 +108,7 @@ namespace API.Controllers
         }
 
         [HttpGet()]
-        [Route("User/GetOwnersRole")]
+        [Route("GetOwnersRole")]
         [Authorize(Roles = StaticUserRoles.OWNER)]
         public async Task<IActionResult> GetOwnersRole(string username)
         {

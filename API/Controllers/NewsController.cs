@@ -15,32 +15,37 @@ namespace API.Controllers
             this.newsService = newsService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet()]
+        [Route("Get")]
         public async Task<IActionResult> Get(int id)
         {
             var result = await newsService.GetNewsById(id);
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpGet()]
+        [Route("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             var result = await newsService.GetAllNews();
             return Ok(result);
         }
-        [HttpPost]
+        [HttpPost()]
+        [Route("Create")]
         public async Task<IActionResult> Create(NewsDto model)
         {
             var result = await newsService.AddNews(model);
             return Ok(result);
         }
-        [HttpPut]
+        [HttpPut()]
+        [Route("Update")]
         public async Task<IActionResult> Update(NewsDto model)
         {
             var result = await newsService.UpdateNews(model);
             return Ok(result);
         }
-        [HttpPut("{id}")]
+        [HttpPut()]
+        [Route("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await newsService.DeleteNews(id);

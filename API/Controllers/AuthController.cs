@@ -10,7 +10,7 @@ using System.Text;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -159,5 +159,6 @@ namespace API.Controllers
 
             return Ok("User is now an Owner");
         }
+    
     }
 }

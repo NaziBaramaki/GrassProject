@@ -1,4 +1,5 @@
-﻿using Infrastructure.Dto;
+﻿using Core.Entities;
+using Infrastructure.Dto;
 using Infrastructure.OtherObject;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -14,11 +15,11 @@ namespace API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<Users> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
 
-        public AuthController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AuthController(UserManager<Users> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -53,8 +54,13 @@ namespace API.Controllers
             if (isExistsUser != null)
                 return BadRequest("UserName Already Exists");
 
-            IdentityUser newUser = new IdentityUser()
+            Users newUser = new Users()
             {
+                createDate = registerDto.createDate,
+                updateDate = registerDto.updateDate,
+                ip = registerDto.IP,
+                Fname = registerDto.Fname,
+                Lname = registerDto.Lname,
                 Email = registerDto.Email,
                 UserName = registerDto.UserName,
                 SecurityStamp = Guid.NewGuid().ToString(),
@@ -101,6 +107,8 @@ namespace API.Controllers
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim("JWTID", Guid.NewGuid().ToString()),
+                new Claim("FirstName",user.Fname),
+                new Claim("LastName", user.Lname),
             };
 
             foreach (var userRole in userRoles)

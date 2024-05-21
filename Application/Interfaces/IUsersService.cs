@@ -10,14 +10,14 @@ namespace Application.Interfaces
 {
     public interface IUsersService
     {
-        Task<List<UsersDto>> GetAll();
-        Task<UsersDto> GetUserByUsername(string username);               
-        Task<UsersDto> GetToken(string username , string password);
-        Task<UsersDto> GetUserByRequestId(int id);
-        Task<UsersDto> AddUser(UsersDto model);
+        Task<List<RegisterDto>> GetAll();
+        Task<RegisterDto> GetUserByUsername(string username);               
+        Task<RegisterDto> GetToken(string username , string password);
+        Task<RegisterDto> GetUserByRequestId(int id);
+        Task<RegisterDto> AddUser(RegisterDto model);
         Task<bool> DeleteUser(int id);
-        Task<bool> UpdateUser(UsersDto model);
-        Task<UsersDto> GetUserByNewsId(int id);
+        Task<bool> UpdateUser(RegisterDto model);
+        Task<RegisterDto> GetUserByNewsId(int id);
 
     }
 }

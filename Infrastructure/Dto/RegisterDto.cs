@@ -18,5 +18,12 @@ namespace Infrastructure.Dto
         [Required(ErrorMessage = "Email is Required")]
         public string Email { get; set; }
 
+        public string createDate { get; set; }
+        public string updateDate { get; set; }
+        public string IP { get; set; }
+        public string Fname { get; set; }
+        public string Lname { get; set; }
+        public string phone { get; set; }
+
     }
 }

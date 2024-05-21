@@ -14,9 +14,6 @@ namespace Core.Migrations
             migrationBuilder.EnsureSchema(
                 name: "Bussiness");
 
-            migrationBuilder.EnsureSchema(
-                name: "Base");
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -36,6 +33,12 @@ namespace Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    createDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    updateDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ip = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Fname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Lname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -140,30 +143,6 @@ namespace Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RequestTbl", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "users",
-                schema: "Base",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Fname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Lname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    password = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Token = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    createDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    updateDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ip = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_users", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -345,10 +324,6 @@ namespace Core.Migrations
             migrationBuilder.DropTable(
                 name: "RequestTbl",
                 schema: "Bussiness");
-
-            migrationBuilder.DropTable(
-                name: "users",
-                schema: "Base");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

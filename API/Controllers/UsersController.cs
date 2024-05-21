@@ -40,7 +40,7 @@ namespace API.Controllers
         }
         [HttpPost()]
         [Route("Create")]
-        public async Task<IActionResult> Create(UsersDto model)
+        public async Task<IActionResult> Create(RegisterDto model)
         {
             var result = await usersService.AddUser(model);
             return Ok(result);
@@ -48,7 +48,7 @@ namespace API.Controllers
 
         [HttpPut()]
         [Route("Update")]
-        public async Task<IActionResult> Update(UsersDto model)
+        public async Task<IActionResult> Update(RegisterDto model)
         {
             var result = await usersService.UpdateUser(model);
             return Ok(result);

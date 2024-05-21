@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    public class GrassShopDbContext : IdentityDbContext
+    public class GrassShopDbContext : IdentityDbContext<Users>
     {
         public GrassShopDbContext(DbContextOptions options) : base(options)
         { 

@@ -23,26 +23,24 @@ namespace Application.Services
             this.dbContext = dbContext;
         }
        
-        public async Task<UsersDto> AddUser(UsersDto model)
+        public async Task<RegisterDto> AddUser(RegisterDto model)
         {
             var user = new Users
             {
                 createDate = model.createDate,
                 updateDate = model.updateDate,
                 ip = model.IP,
-                id = model.id,
                 Fname = model.Fname,
                 Lname = model.Lname,
-                Username = model.Username,
-                password = model.password,
-                email = model.email,
-                Token = model.Token,
-                phone = model.phone,
+                UserName = model.UserName,
+                PasswordHash = model.Password,
+                Email = model.Email,
+                PhoneNumber = model.phone,
                 isDeleted = false
             };
             await dbContext.AddAsync(user);
             await dbContext.SaveChangesAsync();
-            model.id = user.id;
+            model.UserName = user.UserName;
 
             return model;
 
@@ -69,72 +67,66 @@ namespace Application.Services
             }
         }
 
-        public async Task<List<UsersDto>> GetAll()
+        public async Task<List<RegisterDto>> GetAll()
         {
-            var result = await dbContext.user.Where(users => users.isDeleted==false).Select(users => new UsersDto
+            var result = await dbContext.user.Where(users => users.isDeleted==false).Select(users => new RegisterDto
             {
                 createDate = users.createDate,
                 updateDate = users.updateDate,
-                IP = users.ip,
-                id = users.id,
+                IP = users.ip,                
                 Fname = users.Fname,
                 Lname = users.Lname,
-                Username = users.Username,
-                password = users.password,
-                email = users.email,
-                Token = users.Token,
-                phone = users.phone
+                UserName = users.UserName,
+                Password = users.PasswordHash,
+                Email = users.Email,
+                phone = users.PhoneNumber
 
             }).ToListAsync();
             return result;
         }
 
-        public async Task<UsersDto> GetUserByUsername(string username)
+        public async Task<RegisterDto> GetUserByUsername(string username)
         {
             var user = await dbContext.user.FindAsync(username);
             if (user.isDeleted == true)
             {
                 throw new Exception("Some thing unexpected happend");
             }
-            var model = new UsersDto
+            var model = new RegisterDto
             {
                 createDate = user.createDate,
                 updateDate = user.updateDate,
                 IP = user.ip,
-                id = user.id,
                 Fname = user.Fname,
                 Lname = user.Lname,
-                Username = user.Username,
-                password = user.password,
-                email = user.email,
-                Token = user.Token,
-                phone = user.phone
+                UserName = user.UserName,
+                Password = user.PasswordHash,
+                Email = user.Email,
+                phone = user.PhoneNumber
             };
             return model;
         }
 
-        public async Task<UsersDto> GetToken(string username, string password)
+        public async Task<RegisterDto> GetToken(string username, string password)
         {
             var user = await dbContext.user.FindAsync(username);
             if (user.isDeleted == true)
             {
                 throw new Exception("Some thing unexpected happend");
             }
-            if (user.password == password)
+            if (user.PasswordHash == password)
             {
-                var model = new UsersDto
+                var model = new RegisterDto
                 {
                     createDate = user.createDate,
                     updateDate = user.updateDate,
                     IP = user.ip,
-                    id = user.id,
                     Fname = user.Fname,
                     Lname = user.Lname,
-                    Username = user.Username,
-                    password = user.password,
-                    email = user.email,
-                    Token = user.Token,
-                    phone = user.phone
+                    UserName = user.UserName,
+                    Password = user.PasswordHash,
+                    Email = user.Email,
+                    phone = user.PhoneNumber
                 };
                 return model;
             }
@@ -144,7 +136,7 @@ namespace Application.Services
             }
         }
 
-        public async Task<UsersDto> GetUserByRequestId(int id)
+        public async Task<RegisterDto> GetUserByRequestId(int id)
         {
             var request = await dbContext.Requests.FindAsync(id);
             if (request.isDeleted == true)
@@ -164,26 +156,26 @@ namespace Application.Services
                     throw new Exception("Some thing unexpected happend");
                 }
 
-                var userModel = new UsersDto
+                var userModel = new RegisterDto
                 {
                     createDate = user.createDate,
                     updateDate = user.updateDate,
                     IP = user.ip,
                     Fname = user.Fname,
                     Lname = user.Lname,
-                    Username = user.Username,
-                    password = user.password,
-                    email = user.email,
-                    phone = user.phone,
+                    UserName = user.UserName,
+                    Password = user.PasswordHash,
+                    Email = user.Email,
+                    phone = user.PhoneNumber
                 };
 
                 return userModel;
             }
         }
 
-        public async Task<bool> UpdateUser(UsersDto model)
+        public async Task<bool> UpdateUser(RegisterDto model)
         {
-            var userEntity = await dbContext.user.FindAsync(model.id);
+            var userEntity = await dbContext.user.FindAsync(model.UserName);
 
             if (userEntity is null)
             {
@@ -205,7 +197,7 @@ namespace Application.Services
 
         }
 
-        public async Task<UsersDto> GetUserByNewsId(int id)
+        public async Task<RegisterDto> GetUserByNewsId(int id)
         {
             var News = await dbContext.News.FindAsync(id);
             
@@ -234,17 +226,17 @@ namespace Application.Services
                         throw new Exception("Some thing unexpected happend");
                     }
 
-                    var userModel = new UsersDto
+                    var userModel = new RegisterDto
                     {
                         createDate = user.createDate,
                         updateDate = user.updateDate,
                         IP = user.ip,
                         Fname = user.Fname,
                         Lname = user.Lname,
-                        Username = user.Username,
-                        password = user.password,
-                        email = user.email,
-                        phone = user.phone,
+                        UserName = user.UserName,
+                        Password = user.PasswordHash,
+                        Email = user.Email,
+                        phone = user.PhoneNumber
                     };
 
                     return userModel;

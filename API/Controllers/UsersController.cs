@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces;
+using Application.Services;
+using Core.Entities;
 using Infrastructure.Dto;
 using Infrastructure.OtherObject;
 using Microsoft.AspNetCore.Authorization;
@@ -21,9 +23,9 @@ namespace API.Controllers
         }
 
         [HttpGet()]
-        [Route("Get")]
-        [Authorize]
-        public async Task<IActionResult> Get(string username)
+        [Route("GetUser")]
+        //[Authorize]
+        public async Task<IActionResult> getUser(string username)
         {
             var result = await usersService.GetUserByUsername(username);
 
@@ -31,46 +33,39 @@ namespace API.Controllers
         }
 
         [HttpGet()]
-        [Route("GetAll")]
-        [Authorize]
-        public async Task<IActionResult> GetAll()
+        [Route("GetAllUsers")]
+        //[Authorize]
+        public async Task<IActionResult> getAllUsers()
         {
             var result = await usersService.GetAll();
             return Ok(result);
         }
-        [HttpPost()]
-        [Route("Create")]
-        public async Task<IActionResult> Create(RegisterDto model)
-        {
-            var result = await usersService.AddUser(model);
-            return Ok(result);
-        }
+        //[HttpPost()]
+        //[Route("Create")]
+        //public async Task<IActionResult> Create(RegisterDto model)
+        //{
+        //    var result = await usersService.AddUser(model);
+        //    return Ok(result);
+        //}
 
         [HttpPut()]
-        [Route("Update")]
-        public async Task<IActionResult> Update(RegisterDto model)
+        [Route("UpdateUser")]
+        public async Task<IActionResult> updateUser(RegisterDto model)
         {
             var result = await usersService.UpdateUser(model);
             return Ok(result);
         }
 
         [HttpPut()]
-        [Route("Delete")]
-        public async Task<IActionResult> Delete(int id)
+        [Route("DeleteUser")]
+        public async Task<IActionResult> deleteUser(string? username)
         {
-            var result = await usersService.DeleteUser(id);
+            
+            var result = await usersService.DeleteUser(username);
 
             return Ok(result);
         }
-
-        [HttpGet()]
-        [Route("GetToken")]
-        public async Task<IActionResult> GetToken(string username, string password)
-        {
-            var result = await usersService.GetToken(username, password);
-
-            return Ok(result);
-        }
+            
 
         [HttpGet()]
         [Route("GetUserByRequestInfo")]
@@ -89,31 +84,9 @@ namespace API.Controllers
 
             return Ok(result);
         }
+       
 
-
-        [HttpGet()]
-        [Route("GetUsersRole")]
-        [Authorize(Roles = StaticUserRoles.CUSTOMER)]
-        public async Task<IActionResult> GetUsersRole(string username)
-        {
-            return Ok();
-        }
-
-        [HttpGet()]
-        [Route("GetAdminsRole")]
-        [Authorize(Roles = StaticUserRoles.ADMIN)]
-        public async Task<IActionResult> GetAdminsRole(string username)
-        {
-            return Ok();
-        }
-
-        [HttpGet()]
-        [Route("GetOwnersRole")]
-        [Authorize(Roles = StaticUserRoles.OWNER)]
-        public async Task<IActionResult> GetOwnersRole(string username)
-        {
-            return Ok();
-        }
+       
 
     }
 }

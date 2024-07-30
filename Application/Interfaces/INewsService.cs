@@ -12,7 +12,7 @@ namespace Application.Interfaces
         Task<NewsDto> AddNews(NewsDto model);
         Task<List<NewsDto>> GetAllNews();
         Task<NewsDto> GetNewsById(int id);
-        Task<List<NewsDto>> GetAllNewsByUserId(int id);
+        Task<List<NewsDto>> GetAllNewsByUserId(string id);
         Task<bool> DeleteNews(int id);
         Task<bool> UpdateNews(NewsDto model);
     }

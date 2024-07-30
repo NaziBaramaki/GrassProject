@@ -17,7 +17,7 @@ namespace API.Controllers
         }
 
         [HttpGet()]
-        [Route("Get")]
+        [Route("GetRequest")]
         public async Task<IActionResult> Get(int id)
         { 
             var result = await requestService.GetRequestById(id);
@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpGet()]
-        [Route("GetAll")]
+        [Route("GetAllRequests")]
         public async Task<IActionResult> GetAll()
         {
             var result = await requestService.GetAllRequests();
@@ -33,7 +33,7 @@ namespace API.Controllers
         }
 
         [HttpPost()]
-        [Route("Create")]
+        [Route("CreateRequest")]
         public async Task<IActionResult> Create(RequestDto model)
         {
             var result = await requestService.AddRequest(model);
@@ -41,7 +41,7 @@ namespace API.Controllers
         }
 
         [HttpPut()]
-        [Route("Update")]
+        [Route("UpdateRequest")]
         public async Task<IActionResult> Update(RequestDto model)
         {
             var result = await requestService.UpdateRequest(model);
@@ -49,7 +49,7 @@ namespace API.Controllers
         }
 
         [HttpPut()]
-        [Route("Delete")]
+        [Route("DeleteRequest")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await requestService.DeleteRequest(id);

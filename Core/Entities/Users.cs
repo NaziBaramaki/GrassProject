@@ -17,8 +17,10 @@ namespace Core.Entities{
         public Boolean isDeleted { get; set; }
     
         public string Fname {get; set; }
-        public string Lname { get; set; }        
-        
+        public string Lname { get; set; }
+
+        public List<News> News { get; set; }
+
 
     }
 }

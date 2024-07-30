@@ -12,12 +12,18 @@ namespace Infrastructure.Dto
         public string createDate { get; set; }
         public string updateDate { get; set; }
         public string IP { get; set; }
-        public string Id { get; set; }
-        public int userId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string langusge { get; set; }
+        public long Id { get; set; }
+        public string userId { get; set; }
+        public string farsiTitle { get; set; }
+        public string farsiDescription { get; set; }
+        public string farsiSubTitle { get; set; }
+        public string englishTitle { get; set; }
+        public string englishDescription { get; set; }
+        public string englishSubTitle { get; set; }
+        public int isNews { get; set; }
+        public int isProduct { get; set; }
+        public int isProject { get; set; }
         public int isImg { get; set; }
-        public string picture { get; set; }
+        public string imgAddress { get; set; }
     }
 }

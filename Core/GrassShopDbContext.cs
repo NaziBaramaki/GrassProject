@@ -22,7 +22,25 @@ namespace Core
         public DbSet<Requests> Requests => Set<Requests>();
 
 
-           
+        //protected override void OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder modelBuilder)
+        //{
+        //    //modelBuilder.Entity<Users>()
+        //    //    .HasKey(a => a.Id);
+
+        //    //modelBuilder.Entity<News>()
+        //    //    .HasKey(b => b.Id)
+        //    //    .HasRequired(b => b.Users)
+        //    //    .WithMany(a => a.NewsId)
+        //    //    .HasForeignKey(b => b.Users);
+
+        //    modelBuilder.Entity<Users>()
+        //    .HasMany(u => u.News)
+        //    .WithOne(n => n.Users)
+        //    .HasForeignKey(n => n.userId)
+        //    .OnDelete(DeleteBehavior.Cascade);
+
+        //}
+
     }
 }
 

@@ -29,13 +29,18 @@ namespace Application.Services
                 createDate = model.createDate,
                 updateDate = model.updateDate,
                 ip = model.IP,
-                Id = model.Id,
                 userId = model.userId,
-                Title = model.Title,
-                Description = model.Description,
-                langusge = model.langusge,
+                farsiTitle = model.farsiTitle,
+                farsiDescription = model.farsiDescription,
+                farsiSubTitle = model.farsiSubTitle,
+                englishTitle = model.englishTitle,
+                englishDescription = model.englishDescription,
+                englishSubTitle = model.englishSubTitle,
+                isNews = model.isNews,
+                isProduct = model.isProduct,
+                isProject = model.isProject,
                 isImg = model.isImg,
-                picture = model.picture,
+                imgAddress = model.imgAddress,
                 isDeleted = false
             };
 
@@ -48,20 +53,25 @@ namespace Application.Services
 
         }
 
-        public async Task<List<NewsDto>> GetAllNewsByUserId(int userId)
+        public async Task<List<NewsDto>> GetAllNewsByUserId(string userId)
         {
             var resultNews = await dbContext.News.Where(news => ((news.isDeleted == false && news.userId == userId))).Select(news => new NewsDto
             {
                 createDate = news.createDate,
                 updateDate = news.updateDate,
-                IP = news.ip,
                 Id = news.Id,
                 userId = news.userId,
-                Title = news.Title,
-                Description = news.Description,
-                langusge = news.langusge,
+                farsiTitle = news.farsiTitle,
+                farsiDescription = news.farsiDescription,
+                farsiSubTitle = news.farsiSubTitle,
+                englishTitle = news.englishTitle,
+                englishDescription = news.englishDescription,
+                englishSubTitle = news.englishSubTitle,
+                isNews = news.isNews,
+                isProduct = news.isProduct,
+                isProject = news.isProject,
                 isImg = news.isImg,
-                picture = news.picture
+                imgAddress = news.imgAddress,
 
             }).ToListAsync(); ;
 
@@ -69,7 +79,7 @@ namespace Application.Services
         }
         public async Task<bool> DeleteNews(int id)
         {
-            var NewsToDelete = await dbContext.News.FindAsync(id);
+            var NewsToDelete = await dbContext.News.FirstOrDefaultAsync<News>(u => u.Id == id);
 
             if (NewsToDelete == null)
             {
@@ -95,14 +105,19 @@ namespace Application.Services
             {
                 createDate = news.createDate,
                 updateDate = news.updateDate,
-                IP = news.ip,
                 Id = news.Id,
                 userId = news.userId,
-                Title = news.Title,
-                Description = news.Description,
-                langusge = news.langusge,
+                farsiTitle = news.farsiTitle,
+                farsiDescription = news.farsiDescription,
+                farsiSubTitle = news.farsiSubTitle,
+                englishTitle = news.englishTitle,
+                englishDescription = news.englishDescription,
+                englishSubTitle = news.englishSubTitle,
+                isNews = news.isNews,
+                isProduct = news.isProduct,
+                isProject = news.isProject,
                 isImg = news.isImg,
-                picture = news.picture
+                imgAddress = news.imgAddress,
             }).ToListAsync();
 
             return result;
@@ -111,7 +126,7 @@ namespace Application.Services
 
         public async Task<NewsDto> GetNewsById(int id)
         {
-            var news = await dbContext.News.FindAsync(id);
+            var news = await dbContext.News.FirstOrDefaultAsync<News>(u => u.Id == id && u.isDeleted == false);
             if (news == null)
             {
                 throw new Exception("Some thing unexpected happend");
@@ -120,14 +135,19 @@ namespace Application.Services
             {
                 createDate = news.createDate,
                 updateDate = news.updateDate,
-                IP = news.ip,
                 Id = news.Id,
                 userId = news.userId,
-                Title = news.Title,
-                Description = news.Description,
-                langusge = news.langusge,
+                farsiTitle = news.farsiTitle,
+                farsiDescription = news.farsiDescription,
+                farsiSubTitle = news.farsiSubTitle,
+                englishTitle = news.englishTitle,
+                englishDescription = news.englishDescription,
+                englishSubTitle = news.englishSubTitle,
+                isNews = news.isNews,
+                isProduct = news.isProduct,
+                isProject = news.isProject,
                 isImg = news.isImg,
-                picture = news.picture
+                imgAddress = news.imgAddress,
             };
             return model;
         }
@@ -135,7 +155,7 @@ namespace Application.Services
         public async Task<bool> UpdateNews(NewsDto model)
         {
 
-            var newsEntity = await dbContext.News.FindAsync(model.Id);
+            var newsEntity = await dbContext.News.FirstOrDefaultAsync<News>(u => u.Id == model.Id);
 
             if (newsEntity is null)
             {

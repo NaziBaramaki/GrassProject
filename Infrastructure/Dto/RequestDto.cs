@@ -13,8 +13,9 @@ namespace Infrastructure.Dto
         public string createDate { get; set; }
         public string updateDate { get; set; }
         public string IP { get; set; }
-        public string Id { get; set; }
+        public long Id { get; set; }
         public string Fname { get; set; }
+        public string userId { get; set; }
         public string Lname { get; set; }
         public string email { get; set; }
         public string Address { get; set; }

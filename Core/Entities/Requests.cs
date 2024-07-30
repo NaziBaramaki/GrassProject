@@ -13,7 +13,11 @@ namespace Core.Entities
     {
 
         [Key]
-        public string Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+
+        [ForeignKey("AspNetUsers")]
+        public string userId { get; set; }
         public string Fname { get; set; }
         public string Lname { get; set; }
         public string email { get; set; }

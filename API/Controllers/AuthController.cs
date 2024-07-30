@@ -1,4 +1,6 @@
-﻿using Core.Entities;
+﻿using Application.Interfaces;
+using Application.Services;
+using Core.Entities;
 using Infrastructure.Dto;
 using Infrastructure.OtherObject;
 using Microsoft.AspNetCore.Http;
@@ -67,6 +69,8 @@ namespace API.Controllers
             };
 
             var createUserResult = await _userManager.CreateAsync(newUser, registerDto.Password);
+
+            await _userManager.AddToRoleAsync(newUser, StaticUserRoles.CUSTOMER);
 
             if (!createUserResult.Succeeded)
             {
@@ -138,6 +142,63 @@ namespace API.Controllers
             return token;
         }
 
+        [HttpGet()]
+        [Route("GetToken")]
+        public async Task<IActionResult> GetToken(string username, string password)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user is null)
+                return Unauthorized("Invalid Credentials");
+
+            var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, password);
+
+            if (!isPasswordCorrect)
+                return Unauthorized("Invalid Credentials");
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            var authClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim("JWTID", Guid.NewGuid().ToString()),
+                new Claim("FirstName",user.Fname),
+                new Claim("LastName", user.Lname),
+            };
+
+            foreach (var userRole in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
+
+            var token = GenerateNewJsonWebToken(authClaims);
+
+            return Ok(token);
+        }
+
+        // Route -> make user -> admin
+        [HttpPost]
+        [Route("UpdatePassword")]
+        public async Task<IActionResult> UpdatePassword(string username, string password, string newPassword)
+        {
+
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user is null)
+                return Unauthorized("Invalid Credentials");
+
+            var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, password);
+
+            if (!isPasswordCorrect)
+                return Unauthorized("Invalid Credentials");
+
+            var result = await _userManager.ChangePasswordAsync(user, password, newPassword).ConfigureAwait(false);          
+
+            return Ok();
+        }
+
+
         // Route -> make user -> admin
         [HttpPost]
         [Route("make-admin")]
@@ -148,6 +209,7 @@ namespace API.Controllers
             if (user is null)
                 return BadRequest("Invalid User name");
 
+            await _userManager.RemoveFromRoleAsync(user, StaticUserRoles.CUSTOMER);
             await _userManager.AddToRoleAsync(user, StaticUserRoles.ADMIN);
 
             return Ok("User is now an ADMIN");
@@ -162,11 +224,39 @@ namespace API.Controllers
 
             if (user is null)
                 return BadRequest("Invalid User name");
-
+            await _userManager.RemoveFromRoleAsync(user, StaticUserRoles.CUSTOMER);
             await _userManager.AddToRoleAsync(user, StaticUserRoles.OWNER);
 
             return Ok("User is now an Owner");
         }
-    
+
+        [HttpGet()]
+        [Route("GetUsersRole")]
+        //[Authorize(Roles = StaticUserRoles.CUSTOMER)]
+        public async Task<IActionResult> GetUserRole(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            return Ok(userRoles);
+        }
+
+        [HttpGet()]
+        [Route("GetAdminsRole")]
+        //[Authorize(Roles = StaticUserRoles.ADMIN)]
+        public async Task<IActionResult> GetAdminsUsers()
+        {
+            var users = await _userManager.GetUsersInRoleAsync(StaticUserRoles.ADMIN);
+            return Ok(users);
+        }
+
+        [HttpGet()]
+        [Route("GetOwnersRole")]
+        //[Authorize(Roles = StaticUserRoles.OWNER)]
+        public async Task<IActionResult> GetOwnersUsers()
+        {
+            var users = await _userManager.GetUsersInRoleAsync(StaticUserRoles.OWNER);
+            return Ok(users);
+        }
+
     }
 }

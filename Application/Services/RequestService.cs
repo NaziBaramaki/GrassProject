@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -30,6 +31,8 @@ namespace Application.Services
                 createDate = model.createDate,
                 updateDate = model.updateDate,
                 ip = model.IP,
+                Id = model.Id,
+                userId = model.userId,
                 Fname = model.Fname,
                 Lname = model.Lname,
                 email = model.email,
@@ -50,7 +53,8 @@ namespace Application.Services
 
         public async Task<RequestDto> GetRequestById(int id)
         {
-            var request = await dbContext.Requests.FindAsync(id);
+            var request = await dbContext.Requests.FirstOrDefaultAsync<Requests>(u => u.Id == id);
+
             if (request == null)
             {
                 throw new Exception("Some thing unexpected happend");
@@ -97,8 +101,8 @@ namespace Application.Services
 
         public async Task<bool> DeleteRequest(int id)
         {
-            var requestToDelete = await dbContext.Requests.FindAsync(id);
-            
+            var requestToDelete = await dbContext.Requests.FirstOrDefaultAsync<Requests>(u => u.Id == id);                
+
             if (requestToDelete == null)
             {
                 throw new Exception("user doesn't exist");
@@ -121,7 +125,8 @@ namespace Application.Services
         public async Task<bool> UpdateRequest(RequestDto model)
         {
             
-            var requestEntity = await dbContext.Requests.FindAsync(model.Id);
+            var requestEntity = await dbContext.Requests.FirstOrDefaultAsync<Requests>(u => u.Id == model.Id);
+           
 
             if (requestEntity is null)
             {
